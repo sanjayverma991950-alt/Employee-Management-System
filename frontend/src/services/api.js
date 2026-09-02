@@ -1,4 +1,15 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000/api';
+const getBaseUrl = () => {
+  let url = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000/api';
+  // Strip trailing slashes
+  url = url.replace(/\/+$/, '');
+  // If url does not end with /api, append /api
+  if (!url.endsWith('/api')) {
+    url = `${url}/api`;
+  }
+  return url;
+};
+
+const BASE_URL = getBaseUrl();
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');
@@ -12,9 +23,31 @@ const getHeaders = () => {
 };
 
 const handleResponse = async (response) => {
-  const data = await response.json();
+  const contentType = response.headers.get('content-type') || '';
+  let data;
+  
+  if (contentType.includes('application/json')) {
+    data = await response.json();
+  } else {
+    const text = await response.text();
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('API route not found (404). Please verify backend server is reachable.');
+      } else if (response.status === 502 || response.status === 503 || response.status === 504) {
+        throw new Error('Backend server is waking up or temporarily unavailable. Please retry in a moment.');
+      } else {
+        throw new Error(`Server error (${response.status})`);
+      }
+    }
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { message: text };
+    }
+  }
+
   if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong');
+    throw new Error(data?.message || 'Something went wrong');
   }
   return data;
 };

@@ -18,14 +18,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API Routes
+// API Routes (Mounted under /api)
 app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/departments', departmentRoutes);
 app.use('/api/leaves', leaveRoutes);
 
+// Fallback Routes (Direct root mount for flexible frontends/proxies)
+app.use('/auth', authRoutes);
+app.use('/employees', employeeRoutes);
+app.use('/departments', departmentRoutes);
+app.use('/leaves', leaveRoutes);
+
 // Health Check
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health', '/'], (req, res) => {
   res.status(200).json({
     status: 'OK',
     message: 'Employee Management API is running'
