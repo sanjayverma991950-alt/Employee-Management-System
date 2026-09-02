@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import Employee from '../models/Employee.js';
+import Department from '../models/Department.js';
 
 // Verify token middleware
 export const protect = async (req, res, next) => {
@@ -23,12 +25,12 @@ export const protect = async (req, res, next) => {
       next();
     } catch (error) {
       console.error('Auth Error:', error.message);
-      res.status(401).json({ success: false, message: 'Not authorized, token failed' });
+      return res.status(401).json({ success: false, message: 'Not authorized, token failed' });
     }
   }
 
   if (!token) {
-    res.status(401).json({ success: false, message: 'Not authorized, no token provided' });
+    return res.status(401).json({ success: false, message: 'Not authorized, no token provided' });
   }
 };
 

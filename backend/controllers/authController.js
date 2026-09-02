@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import Employee from '../models/Employee.js';
+import Department from '../models/Department.js';
 
 // Helper to generate token
 const generateToken = (id) => {
@@ -12,12 +14,14 @@ const generateToken = (id) => {
 // @route   POST /api/auth/login
 // @access  Public
 export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
 
   try {
     if (!email || !password) {
       return res.status(400).json({ success: false, message: 'Please provide email and password' });
     }
+
+    email = email.toLowerCase().trim();
 
     // Check for user email
     const user = await User.findOne({ email }).populate('employeeProfile');

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import dns from 'node:dns';
 import User from './models/User.js';
 import Employee from './models/Employee.js';
 import Department from './models/Department.js';
@@ -13,11 +14,14 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.join(__dirname, '.env') });
 
+// Use Google DNS to resolve MongoDB Atlas SRV records
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
 const seedData = async () => {
   try {
     const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/ems';
     console.log(`Connecting to database for seeding: ${mongoUri}`);
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(mongoUri, { family: 4 });
 
     // 1. Clear Database
     console.log('Clearing database...');
