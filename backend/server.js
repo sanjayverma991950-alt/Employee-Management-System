@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 
 // Route imports
@@ -9,7 +12,11 @@ import employeeRoutes from './routes/employeeRoutes.js';
 import departmentRoutes from './routes/departmentRoutes.js';
 import leaveRoutes from './routes/leaveRoutes.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Load env vars
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 dotenv.config();
 
 const app = express();
@@ -32,8 +39,10 @@ app.use('/leaves', leaveRoutes);
 
 // Health Check
 app.get(['/api/health', '/health', '/'], (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
   res.status(200).json({
     status: 'OK',
+    database: dbStatus,
     message: 'Employee Management API is running'
   });
 });
