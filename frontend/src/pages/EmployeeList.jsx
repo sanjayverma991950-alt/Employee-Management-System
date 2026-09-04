@@ -30,9 +30,17 @@ const EmployeeList = () => {
   // Credential popups
   const [newCredentials, setNewCredentials] = useState(null);
 
-  const fetchEmployees = async () => {
+  const fetchEmployees = async (searchQuery = search, deptFilter = selectedDept, statusFilter = selectedStatus) => {
     try {
-      const res = await api.get(`/employees?search=${search}&department=${selectedDept}&status=${selectedStatus}`);
+      const queryParams = new URLSearchParams();
+      if (searchQuery && searchQuery.trim() !== '') queryParams.append('search', searchQuery.trim());
+      if (deptFilter && deptFilter !== 'all') queryParams.append('department', deptFilter);
+      if (statusFilter && statusFilter !== 'all') queryParams.append('status', statusFilter);
+
+      const queryString = queryParams.toString();
+      const endpoint = queryString ? `/employees?${queryString}` : '/employees';
+
+      const res = await api.get(endpoint);
       if (res.success) {
         setEmployees(res.data);
       }
@@ -55,7 +63,7 @@ const EmployeeList = () => {
   useEffect(() => {
     const initLoad = async () => {
       setLoading(true);
-      await Promise.all([fetchEmployees(), fetchDepartments()]);
+      await Promise.all([fetchEmployees(search, selectedDept, selectedStatus), fetchDepartments()]);
       setLoading(false);
     };
     initLoad();
@@ -85,7 +93,11 @@ const EmployeeList = () => {
   };
 
   const handleSave = (savedEmployee, credentials) => {
-    fetchEmployees();
+    // Reset filters to default so the newly created employee is guaranteed to be visible
+    setSearch('');
+    setSelectedDept('all');
+    setSelectedStatus('all');
+    fetchEmployees('', 'all', 'all');
     if (credentials) {
       // Show credentials notification modal
       setNewCredentials(credentials);
@@ -249,26 +261,30 @@ const EmployeeList = () => {
             </thead>
             <tbody>
               {employees.map((emp) => {
-                const badgeClass = `badge badge-${emp.status.toLowerCase()}`;
+                const status = emp.status || 'Active';
+                const badgeClass = `badge badge-${status.toLowerCase()}`;
+                const salary = Number(emp.salary || 0);
+                const joinDate = emp.joiningDate ? new Date(emp.joiningDate).toLocaleDateString() : 'N/A';
+                const deptName = emp.department?.name || (typeof emp.department === 'string' ? emp.department : 'Unassigned');
                 
                 return (
-                  <tr key={emp._id}>
+                  <tr key={emp._id || emp.email}>
                     <td>
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <strong style={{ fontSize: '0.9rem' }}>{emp.firstName} {emp.lastName}</strong>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{emp.email}</span>
                       </div>
                     </td>
-                    <td>{emp.designation}</td>
+                    <td>{emp.designation || 'N/A'}</td>
                     <td>
                       <span className="badge" style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'var(--text-secondary)', textTransform: 'none' }}>
-                        {emp.department ? emp.department.name : 'Unassigned'}
+                        {deptName}
                       </span>
                     </td>
-                    <td>{new Date(emp.joiningDate).toLocaleDateString()}</td>
+                    <td>{joinDate}</td>
                     <td>
                       {isAdmin ? (
-                        `$${emp.salary.toLocaleString()}`
+                        `$${salary.toLocaleString()}`
                       ) : (
                         <span style={{ 
                           filter: 'blur(3.5px)', 
@@ -282,7 +298,7 @@ const EmployeeList = () => {
                       )}
                     </td>
                     <td>
-                      <span className={badgeClass}>{emp.status}</span>
+                      <span className={badgeClass}>{status}</span>
                     </td>
                     {isAdmin && (
                       <td style={{ textAlign: 'right' }}>

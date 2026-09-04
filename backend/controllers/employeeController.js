@@ -10,23 +10,24 @@ export const getEmployees = async (req, res) => {
     const { search, department, status } = req.query;
     let query = {};
 
-    // Search by first/last name or email
-    if (search) {
+    // Search by first/last name, email, or designation
+    if (search && search.trim() !== '') {
+      const cleanSearch = search.trim();
       query.$or = [
-        { firstName: { $regex: search, $options: 'i' } },
-        { lastName: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { designation: { $regex: search, $options: 'i' } }
+        { firstName: { $regex: cleanSearch, $options: 'i' } },
+        { lastName: { $regex: cleanSearch, $options: 'i' } },
+        { email: { $regex: cleanSearch, $options: 'i' } },
+        { designation: { $regex: cleanSearch, $options: 'i' } }
       ];
     }
 
     // Filter by department
-    if (department && department !== 'all') {
+    if (department && department !== 'all' && department.trim() !== '') {
       query.department = department;
     }
 
     // Filter by status
-    if (status && status !== 'all') {
+    if (status && status !== 'all' && status.trim() !== '') {
       query.status = status;
     }
 
@@ -64,13 +65,19 @@ export const createEmployee = async (req, res) => {
   const { firstName, lastName, email, phone, designation, department, salary, status } = req.body;
 
   try {
+    const cleanEmail = email?.toLowerCase()?.trim();
+
+    if (!cleanEmail) {
+      return res.status(400).json({ success: false, message: 'Email is required' });
+    }
+
     // Check if email already registered
-    const employeeExists = await Employee.findOne({ email });
+    const employeeExists = await Employee.findOne({ email: cleanEmail });
     if (employeeExists) {
       return res.status(400).json({ success: false, message: 'Employee with this email already exists' });
     }
 
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email: cleanEmail });
     if (userExists) {
       return res.status(400).json({ success: false, message: 'User account with this email already exists' });
     }
@@ -78,13 +85,13 @@ export const createEmployee = async (req, res) => {
     // Verify department exists
     const dept = await Department.findById(department);
     if (!dept) {
-      return res.status(400).json({ success: false, message: 'Department not found' });
+      return res.status(400).json({ success: false, message: 'Selected department not found' });
     }
 
     // 1. Create the associated User Login
     const defaultPassword = 'employee123'; // Default password for new employee
     const newUser = await User.create({
-      email,
+      email: cleanEmail,
       password: defaultPassword,
       role: 'Employee'
     });
@@ -92,14 +99,15 @@ export const createEmployee = async (req, res) => {
     // 2. Create the Employee Profile
     const employee = await Employee.create({
       user: newUser._id,
-      firstName,
-      lastName,
-      email,
-      phone,
-      designation,
+      firstName: firstName?.trim(),
+      lastName: lastName?.trim(),
+      email: cleanEmail,
+      phone: phone?.trim() || '',
+      designation: designation?.trim(),
       department,
-      salary,
-      status: status || 'Active'
+      salary: Number(salary) || 0,
+      status: status || 'Active',
+      joiningDate: new Date()
     });
 
     // 3. Link profile back to the User
@@ -113,7 +121,7 @@ export const createEmployee = async (req, res) => {
       message: 'Employee created and user login generated successfully',
       data: populatedEmployee,
       loginCredentials: {
-        email,
+        email: cleanEmail,
         password: defaultPassword
       }
     });
@@ -135,18 +143,20 @@ export const updateEmployee = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Employee not found' });
     }
 
+    const cleanEmail = email?.toLowerCase()?.trim();
+
     // Handle email update in user credentials if changed
-    if (email && email !== employee.email) {
-      const emailExists = await Employee.findOne({ email });
+    if (cleanEmail && cleanEmail !== employee.email) {
+      const emailExists = await Employee.findOne({ email: cleanEmail, _id: { $ne: employee._id } });
       if (emailExists) {
         return res.status(400).json({ success: false, message: 'Email is already in use by another employee' });
       }
 
       // Update user document
       if (employee.user) {
-        await User.findByIdAndUpdate(employee.user, { email });
+        await User.findByIdAndUpdate(employee.user, { email: cleanEmail });
       }
-      employee.email = email;
+      employee.email = cleanEmail;
     }
 
     // Verify new department if changed
@@ -158,14 +168,13 @@ export const updateEmployee = async (req, res) => {
       employee.department = department;
     }
 
-    employee.firstName = firstName !== undefined ? firstName : employee.firstName;
-    employee.lastName = lastName !== undefined ? lastName : employee.lastName;
-    employee.phone = phone !== undefined ? phone : employee.phone;
-    employee.designation = designation !== undefined ? designation : employee.designation;
-    employee.salary = salary !== undefined ? salary : employee.salary;
-    employee.status = status !== undefined ? status : employee.status;
+    if (firstName !== undefined) employee.firstName = firstName.trim();
+    if (lastName !== undefined) employee.lastName = lastName.trim();
+    if (phone !== undefined) employee.phone = phone.trim();
+    if (designation !== undefined) employee.designation = designation.trim();
+    if (salary !== undefined) employee.salary = Number(salary) || 0;
+    if (status !== undefined) employee.status = status;
 
-    // If status is changed to Inactive, we might want to prevent login or handle User status, but let's keep it simple
     const updatedEmployee = await employee.save();
     const populated = await Employee.findById(updatedEmployee._id).populate('department', 'name code');
 
