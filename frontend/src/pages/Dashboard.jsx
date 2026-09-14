@@ -119,7 +119,7 @@ const Dashboard = () => {
         border: '1px solid var(--glass-border)'
       }}>
         <h2 style={{ fontSize: '1.65rem', marginBottom: '0.5rem', fontWeight: 800 }}>
-          {isAdmin ? 'System Overview Panel' : 'Employee Portal Dashboard'}
+          {isAdmin ? 'System Overview Panel — Sanjay Verma' : 'Employee Portal Dashboard'}
         </h2>
         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '600px' }}>
           {isAdmin 
@@ -180,9 +180,9 @@ const Dashboard = () => {
       </div>
 
       {/* Main Grid Widgets */}
-      <div style={{
+      <div className="dashboard-widgets-grid" style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
         gap: '1.5rem'
       }}>
         
@@ -295,7 +295,7 @@ const Dashboard = () => {
           border: '1px dashed var(--border-color)'
         }}>
           <div>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 700 }}>Corporate Administrator Operations</h4>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 700 }}>Corporate Administrator Operations (Sanjay Verma)</h4>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Quick shortcuts for routine employee logs management.</p>
           </div>
           <div style={{ display: 'flex', gap: '0.75rem' }}>

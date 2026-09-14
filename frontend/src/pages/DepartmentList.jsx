@@ -159,13 +159,13 @@ const DepartmentList = () => {
           }} />
         </div>
       ) : (
-        <div style={{
+        <div className="departments-grid" style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
           gap: '1.5rem'
         }}>
           {departments.map((dept) => (
-            <div key={dept._id} className="glass glass-hover" style={{
+            <div key={dept._id} className="glass glass-hover department-card" style={{
               borderRadius: 'var(--radius-lg)',
               padding: '1.5rem',
               display: 'flex',
@@ -201,7 +201,7 @@ const DepartmentList = () => {
               </div>
 
               {/* Footer info card */}
-              <div style={{
+              <div className="department-card-footer" style={{
                 borderTop: '1px solid var(--border-color)',
                 paddingTop: '1rem',
                 display: 'grid',
@@ -222,9 +222,10 @@ const DepartmentList = () => {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gridColumn: 'span 2', marginTop: '0.25rem' }}>
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>Annual Operating Budget</span>
-                  <strong style={{ marginTop: '0.15rem', display: 'flex', alignItems: 'center', gap: '0.15rem', color: 'var(--secondary)', fontSize: '0.95rem' }}>
-                    <IndianRupee size={14} />
-                    {dept.budget ? dept.budget.toLocaleString('en-IN') : '0'} INR
+                  <strong style={{ marginTop: '0.15rem', display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--secondary)', fontSize: '0.95rem' }}>
+                    <IndianRupee size={15} />
+                    <span>{dept.budget ? dept.budget.toLocaleString('en-IN') : '0'}</span>
+                    <span style={{ fontSize: '0.75rem', opacity: 0.85 }}>INR</span>
                   </strong>
                 </div>
               </div>
@@ -305,12 +306,12 @@ const DepartmentList = () => {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Annual Budget (INR)</label>
+                <label className="form-label">Annual Budget (₹ INR)</label>
                 <input
                   type="number"
                   name="budget"
                   className="form-control"
-                  placeholder="e.g. 150000"
+                  placeholder="e.g. 1500000"
                   value={formData.budget}
                   onChange={handleChange}
                 />

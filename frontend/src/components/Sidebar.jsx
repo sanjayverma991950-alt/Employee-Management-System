@@ -7,7 +7,8 @@ import {
   Building2, 
   CalendarDays, 
   LogOut,
-  FolderLock
+  FolderLock,
+  X
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen = false, onClose = () => {} }) => {
@@ -26,28 +27,40 @@ const Sidebar = ({ isOpen = false, onClose = () => {} }) => {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '0.75rem',
+        justifyContent: 'space-between',
         marginBottom: '2.5rem',
         padding: '0 0.5rem'
       }}>
-        <div style={{
-          background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-          width: '40px',
-          height: '40px',
-          borderRadius: 'var(--radius-md)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-          fontWeight: 800,
-          fontSize: '1.25rem'
-        }}>
-          E
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{
+            background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+            width: '40px',
+            height: '40px',
+            borderRadius: 'var(--radius-md)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#fff',
+            fontWeight: 800,
+            fontSize: '1.25rem'
+          }}>
+            E
+          </div>
+          <div>
+            <h2 style={{ fontSize: '1.15rem', fontWeight: 800, lineHeight: 1.1 }}>EMPIRE</h2>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.1em' }}>STAFF WORKFLOW</span>
+          </div>
         </div>
-        <div>
-          <h2 style={{ fontSize: '1.15rem', fontWeight: 800, lineHeight: 1.1 }}>EMPIRE</h2>
-          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.1em' }}>STAFF WORKFLOW</span>
-        </div>
+
+        {/* Mobile close button */}
+        <button
+          className="btn-icon sidebar-close-btn"
+          onClick={onClose}
+          title="Close menu"
+          aria-label="Close menu"
+        >
+          <X size={20} />
+        </button>
       </div>
 
       {/* Nav Menu */}
@@ -102,7 +115,7 @@ const Sidebar = ({ isOpen = false, onClose = () => {} }) => {
           <FolderLock size={16} className="text-secondary" style={{ color: 'var(--primary)' }} />
           <div>
             <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-primary)' }}>Role Level</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 500 }}>{isAdmin ? 'Administrator' : 'Employee Staff'}</div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 500 }}>{isAdmin ? 'Administrator (Sanjay Verma)' : 'Employee Staff'}</div>
           </div>
         </div>
 

@@ -451,6 +451,10 @@ h1, h2, h3, h4, h5, h6 {
   display: none !important;
 }
 
+.sidebar-close-btn {
+  display: none !important;
+}
+
 /* ================================================
    FORM GRID
    ================================================ */
@@ -461,19 +465,33 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ================================================
-   RESPONSIVE – Tablet ≤ 1024px
+   RESPONSIVE – Large Tablets / Desktops (≤ 1024px)
+   (iPad Mini, iPad Pro 13, Surface Pro 10, Foldables)
    ================================================ */
 @media (max-width: 1024px) {
   .sidebar {
-    width: 230px;
+    width: 240px;
+    padding: 1.5rem 1rem;
+  }
+
+  .page-container {
+    padding: 1.5rem;
+  }
+
+  .dashboard-metrics {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .dashboard-widgets-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 
 /* ================================================
-   RESPONSIVE – Mobile ≤ 768px
+   RESPONSIVE – Tablets & Foldables (≤ 992px)
+   (Drawer mode activated for clean navigation)
    ================================================ */
-@media (max-width: 768px) {
-  /* Layout */
+@media (max-width: 992px) {
   .app-container {
     flex-direction: row;
     position: relative;
@@ -486,20 +504,19 @@ h1, h2, h3, h4, h5, h6 {
     overflow-y: auto;
   }
 
-  .page-container {
-    padding: 1rem;
-  }
-
   /* Sidebar drawer */
   .sidebar {
     position: fixed;
     left: 0;
     top: 0;
     height: 100vh;
-    width: 260px;
+    width: 280px;
+    max-width: 85vw;
     transform: translateX(-100%);
     z-index: 300;
     border-right: 1px solid var(--border-color);
+    box-shadow: none;
+    transition: transform var(--transition-normal);
   }
 
   .sidebar.sidebar-open {
@@ -511,32 +528,58 @@ h1, h2, h3, h4, h5, h6 {
   .sidebar-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     z-index: 250;
   }
 
-  /* Show hamburger */
+  /* Show hamburger & close button */
   .hamburger-btn {
     display: flex !important;
     flex-shrink: 0;
   }
 
-  /* Header */
+  .sidebar-close-btn {
+    display: flex !important;
+  }
+
   .header-bar {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .departments-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)) !important;
+  }
+}
+
+/* ================================================
+   RESPONSIVE – Standard Mobile (≤ 768px)
+   (iPhone 16 / Pro Max, Pixel 9 / Pro, Galaxy A55, Z Fold)
+   ================================================ */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 1rem;
+  }
+
+  .header-bar {
+    padding: 0.7rem 1rem;
   }
 
   .header-date {
     display: none;
   }
 
-  /* Collapse attendance status text; keep action buttons */
+  .header-greeting {
+    font-size: 0.95rem !important;
+  }
+
+  /* Collapse attendance shift status text; keep buttons */
   .attendance-status {
     display: none;
   }
 
-  /* Hide user name/email, keep avatar */
+  /* Compact user info */
   .user-info {
     display: none;
   }
@@ -551,18 +594,24 @@ h1, h2, h3, h4, h5, h6 {
     grid-template-columns: 1fr;
   }
 
-  /* Modal full-width */
-  .modal-content {
-    max-width: calc(100vw - 2rem) !important;
-    padding: 1.25rem;
-    margin: 1rem;
-    max-height: 95vh;
+  /* Modal responsive styling */
+  .modal-overlay {
+    padding: 0.75rem;
   }
 
-  /* Tables scroll horizontally */
+  .modal-content {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 1.25rem;
+    margin: 0;
+    max-height: 94vh;
+  }
+
+  /* Tables scroll horizontally with momentum */
   .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    width: 100%;
   }
 
   .custom-table {
@@ -575,21 +624,56 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.8rem;
   }
 
-  /* Dashboard metrics – 2 columns on mobile */
-  .dashboard-metrics {
-    grid-template-columns: 1fr 1fr !important;
+  /* Filter deck vertical stack */
+  .employee-filters-deck {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
   }
 
-  /* Quick action deck – wrap items neatly */
+  .filter-item-search,
+  .filter-item-dept,
+  .filter-item-status {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  /* Title block */
+  .page-title-block {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  .add-employee-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Quick action deck */
   .quick-actions-deck {
-    flex-wrap: wrap;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  .quick-actions-deck > div:last-child {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .quick-actions-deck > div:last-child .btn {
+    flex: 1;
+    justify-content: center;
   }
 }
 
 /* ================================================
-   RESPONSIVE – Small Mobile ≤ 480px
+   RESPONSIVE – Compact Mobile (≤ 540px)
+   (iPhone SE, Galaxy Z Fold 6 folded, Pixel 9)
    ================================================ */
-@media (max-width: 480px) {
+@media (max-width: 540px) {
   .page-container {
     padding: 0.75rem;
   }
@@ -597,26 +681,6 @@ h1, h2, h3, h4, h5, h6 {
   .header-bar {
     padding: 0.6rem 0.75rem;
     gap: 0.5rem;
-  }
-
-  .modal-overlay {
-    align-items: flex-end;
-  }
-
-  .modal-content {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    max-height: 92vh;
-    margin: 0 !important;
-    max-width: 100vw !important;
-  }
-
-  .leave-date-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .dashboard-metrics {
-    grid-template-columns: 1fr !important;
   }
 
   .welcome-banner {
@@ -627,27 +691,69 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.25rem !important;
   }
 
+  .welcome-banner p {
+    font-size: 0.8rem !important;
+  }
+
+  .dashboard-metrics {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
   .metric-card-inner {
     padding: 1rem !important;
   }
 
-  .quick-actions-deck {
-    flex-direction: column !important;
-    align-items: flex-start !important;
+  .departments-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .department-card {
+    padding: 1.15rem !important;
+  }
+
+  .department-card-footer {
+    grid-template-columns: 1fr !important;
+    gap: 0.65rem !important;
+  }
+
+  .leave-date-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-content {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    max-height: 92vh;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
   }
 }
 
 /* ================================================
-   RESPONSIVE – Extra Small ≤ 360px
+   RESPONSIVE – Ultra Narrow Screen (≤ 360px)
+   (Galaxy Z Fold outer, small devices)
    ================================================ */
 @media (max-width: 360px) {
   .btn {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8rem;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.78rem;
   }
 
   .sidebar {
-    width: 240px;
+    width: 250px;
+  }
+
+  .header-bar {
+    padding: 0.5rem 0.5rem;
   }
 }
+
 

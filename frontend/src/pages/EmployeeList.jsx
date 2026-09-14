@@ -108,7 +108,7 @@ const EmployeeList = () => {
     <div className="page-container">
       
       {/* Title block */}
-      <div style={{
+      <div className="page-title-block" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -121,7 +121,7 @@ const EmployeeList = () => {
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Search, filter, and manage staff records.</p>
         </div>
         {isAdmin && (
-          <button className="btn btn-primary" onClick={handleCreate}>
+          <button className="btn btn-primary add-employee-btn" onClick={handleCreate}>
             <Plus size={16} />
             Add Employee
           </button>
@@ -130,7 +130,7 @@ const EmployeeList = () => {
 
       {/* New Credentials Notification */}
       {newCredentials && (
-        <div className="glass" style={{
+        <div className="glass credentials-banner" style={{
           padding: '1.5rem',
           borderRadius: 'var(--radius-md)',
           marginBottom: '2rem',
@@ -145,30 +145,38 @@ const EmployeeList = () => {
             A user account has been successfully generated. Log in with the following credentials:
           </p>
           <div style={{
-            display: 'inline-flex',
-            gap: '1.5rem',
-            padding: '0.75rem 1.25rem',
-            borderRadius: 'var(--radius-sm)',
-            backgroundColor: 'var(--bg-tertiary)',
-            border: '1px solid var(--border-color)',
-            fontSize: '0.85rem',
-            fontFamily: 'monospace'
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '1rem'
           }}>
-            <span><strong>Email:</strong> {newCredentials.email}</span>
-            <span><strong>Password:</strong> {newCredentials.password}</span>
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '1.5rem',
+              padding: '0.75rem 1.25rem',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--border-color)',
+              fontSize: '0.85rem',
+              fontFamily: 'monospace'
+            }}>
+              <span><strong>Email:</strong> {newCredentials.email}</span>
+              <span><strong>Password:</strong> {newCredentials.password}</span>
+            </div>
+            <button 
+              className="btn btn-secondary" 
+              style={{ padding: '0.45rem 1rem', fontSize: '0.8rem' }}
+              onClick={() => setNewCredentials(null)}
+            >
+              Acknowledge
+            </button>
           </div>
-          <button 
-            className="btn btn-secondary" 
-            style={{ padding: '0.25rem 0.75rem', fontSize: '0.75rem', marginLeft: '1.5rem' }}
-            onClick={() => setNewCredentials(null)}
-          >
-            Acknowledge
-          </button>
         </div>
       )}
 
       {/* Filters Deck */}
-      <div className="glass" style={{
+      <div className="glass employee-filters-deck" style={{
         padding: '1.25rem',
         borderRadius: 'var(--radius-md)',
         display: 'flex',
@@ -179,7 +187,7 @@ const EmployeeList = () => {
       }}>
         
         {/* Search */}
-        <div style={{ position: 'relative', flex: 1, minWidth: '220px' }}>
+        <div className="filter-item-search" style={{ position: 'relative', flex: 1, minWidth: '220px' }}>
           <Search size={16} style={{
             position: 'absolute',
             left: '1rem',
@@ -198,7 +206,7 @@ const EmployeeList = () => {
         </div>
 
         {/* Dept filter */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: '180px' }}>
+        <div className="filter-item-dept" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: '180px' }}>
           <Filter size={14} style={{ color: 'var(--text-muted)' }} />
           <select 
             className="form-control"
@@ -213,7 +221,7 @@ const EmployeeList = () => {
         </div>
 
         {/* Status filter */}
-        <div style={{ minWidth: '140px' }}>
+        <div className="filter-item-status" style={{ minWidth: '140px' }}>
           <select 
             className="form-control"
             value={selectedStatus}

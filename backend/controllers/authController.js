@@ -30,6 +30,7 @@ export const loginUser = async (req, res) => {
       res.json({
         success: true,
         _id: user._id,
+        name: user.name || (user.role === 'Admin' ? 'Sanjay Verma' : ''),
         email: user.email,
         role: user.role,
         employeeProfile: user.employeeProfile,

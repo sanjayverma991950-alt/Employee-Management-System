@@ -192,7 +192,7 @@ const Login = () => {
               className="btn btn-secondary"
               style={{ padding: '0.4rem 0.85rem', fontSize: '0.75rem', flex: 1 }}
             >
-              Admin Acc
+              Admin (Sanjay Verma)
             </button>
             <button
               onClick={() => preFill('employee')}
