@@ -214,7 +214,7 @@ const EmployeeModal = ({ isOpen, onClose, employee, onSave }) => {
 
           <div className="form-grid-2">
             <div className="form-group">
-              <label className="form-label">Annual Salary (USD) *</label>
+              <label className="form-label">Annual Salary (INR) *</label>
               <input
                 type="number"
                 name="salary"

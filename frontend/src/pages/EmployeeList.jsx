@@ -284,7 +284,7 @@ const EmployeeList = () => {
                     <td>{joinDate}</td>
                     <td>
                       {isAdmin ? (
-                        `$${salary.toLocaleString()}`
+                        `₹${salary.toLocaleString('en-IN')}`
                       ) : (
                         <span style={{ 
                           filter: 'blur(3.5px)', 
@@ -293,7 +293,7 @@ const EmployeeList = () => {
                           fontSize: '0.8rem',
                           fontWeight: 700
                         }} title="Confidential record">
-                          $85,000
+                          ₹85,000
                         </span>
                       )}
                     </td>
