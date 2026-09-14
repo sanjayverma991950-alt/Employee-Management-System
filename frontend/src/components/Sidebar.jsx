@@ -10,7 +10,7 @@ import {
   FolderLock
 } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen = false, onClose = () => {} }) => {
   const { logout, isAdmin } = useAuth();
 
   const menuItems = [
@@ -21,16 +21,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="glass" style={{
-      width: '260px',
-      display: 'flex',
-      flexDirection: 'column',
-      borderRight: '1px solid var(--glass-border)',
-      padding: '2rem 1.5rem',
-      height: '100vh',
-      position: 'sticky',
-      top: 0
-    }}>
+    <aside className={`sidebar glass${isOpen ? ' sidebar-open' : ''}`}>
       {/* Brand Title */}
       <div style={{
         display: 'flex',
@@ -67,6 +58,7 @@ const Sidebar = () => {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={onClose}
               style={({ isActive }) => ({
                 display: 'flex',
                 alignItems: 'center',

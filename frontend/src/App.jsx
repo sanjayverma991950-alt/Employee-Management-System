@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -16,6 +16,7 @@ import LeaveManagement from './pages/LeaveManagement';
 // Wrapper for checking authentication
 const ProtectedLayout = ({ children }) => {
   const { user, loading } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (loading) {
     return (
@@ -39,9 +40,16 @@ const ProtectedLayout = ({ children }) => {
 
   return (
     <div className="app-container">
-      <Sidebar />
+      {/* Mobile overlay backdrop */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <main className="main-content">
-        <Header />
+        <Header onMenuToggle={() => setSidebarOpen(prev => !prev)} />
         {children}
       </main>
     </div>

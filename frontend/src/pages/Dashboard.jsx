@@ -111,7 +111,7 @@ const Dashboard = () => {
     <div className="page-container">
       
       {/* Welcome Banner */}
-      <div className="glass" style={{
+      <div className="glass welcome-banner" style={{
         padding: '2.25rem',
         borderRadius: 'var(--radius-lg)',
         marginBottom: '2rem',
@@ -130,9 +130,9 @@ const Dashboard = () => {
       </div>
 
       {/* Metrics Grid */}
-      <div style={{
+      <div className="dashboard-metrics" style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
         gap: '1.5rem',
         marginBottom: '2rem'
       }}>
@@ -145,7 +145,7 @@ const Dashboard = () => {
               style={{ textDecoration: 'none' }}
               className="glass glass-hover"
             >
-              <div style={{
+              <div className="metric-card-inner" style={{
                 padding: '1.5rem',
                 borderRadius: 'var(--radius-md)',
                 display: 'flex',
@@ -283,7 +283,7 @@ const Dashboard = () => {
 
       {/* Quick Action Deck for Admin */}
       {isAdmin && (
-        <div className="glass" style={{
+        <div className="glass quick-actions-deck" style={{
           padding: '1.5rem',
           borderRadius: 'var(--radius-md)',
           marginTop: '2rem',

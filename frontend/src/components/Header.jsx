@@ -7,10 +7,11 @@ import {
   User, 
   Clock, 
   Play, 
-  Square 
+  Square,
+  Menu
 } from 'lucide-react';
 
-const Header = () => {
+const Header = ({ onMenuToggle }) => {
   const { user, theme, toggleTheme, isAdmin } = useAuth();
   const [clockStatus, setClockStatus] = useState({
     clockedIn: false,
@@ -89,50 +90,43 @@ const Header = () => {
   };
 
   return (
-    <header className="glass" style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '1.25rem 2rem',
-      borderBottom: '1px solid var(--glass-border)',
-      position: 'sticky',
-      top: 0,
-      zIndex: 100
-    }}>
-      {/* Greeting and Title */}
-      <div>
-        <h1 style={{ fontSize: '1.25rem', fontWeight: 700 }}>
-          {getGreeting()}, {user?.employeeProfile ? user.employeeProfile.firstName : 'Admin'}
-        </h1>
-        <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-          {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-        </p>
+    <header className="glass header-bar">
+      <div className="header-left">
+        {/* Hamburger - visible only on mobile */}
+        <button
+          className="btn-icon hamburger-btn"
+          onClick={onMenuToggle}
+          title="Toggle navigation"
+        >
+          <Menu size={22} />
+        </button>
+
+        {/* Greeting and Title */}
+        <div>
+          <h1 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
+            {getGreeting()}, {user?.employeeProfile ? user.employeeProfile.firstName : 'Admin'}
+          </h1>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }} className="header-date">
+            {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          </p>
+        </div>
       </div>
 
       {/* Header Actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+      <div className="header-actions">
         
         {/* Attendance Widget for Employees */}
         {!isAdmin && user?.employeeProfile && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            padding: '0.5rem 1rem',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-tertiary)',
-            border: '1px solid var(--border-color)',
-            fontSize: '0.85rem'
-          }}>
-            <Clock size={16} style={{ color: 'var(--primary)' }} />
+          <div className="attendance-widget">
+            <Clock size={16} style={{ color: 'var(--primary)', flexShrink: 0 }} />
             
             {/* Clock Status text */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem', marginRight: '0.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }} className="attendance-status">
               <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>Shift Tracker</span>
-              <span style={{ fontWeight: 600 }}>
+              <span style={{ fontWeight: 600, fontSize: '0.8rem' }}>
                 {!clockStatus.clockedIn && 'Not Working'}
-                {clockStatus.clockedIn && !clockStatus.clockedOut && `Working since ${clockStatus.clockInTime}`}
-                {clockStatus.clockedOut && `Finished shift at ${clockStatus.clockOutTime}`}
+                {clockStatus.clockedIn && !clockStatus.clockedOut && `In: ${clockStatus.clockInTime}`}
+                {clockStatus.clockedOut && `Out: ${clockStatus.clockOutTime}`}
               </span>
             </div>
 
@@ -142,23 +136,23 @@ const Header = () => {
                 onClick={handleClockIn} 
                 disabled={clockStatus.loading}
                 className="btn btn-primary" 
-                style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem' }}
+                style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
               >
                 <Play size={12} fill="#fff" />
-                Clock In
+                <span className="btn-label">Clock In</span>
               </button>
             ) : !clockStatus.clockedOut ? (
               <button 
                 onClick={handleClockOut} 
                 disabled={clockStatus.loading}
                 className="btn btn-danger" 
-                style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem' }}
+                style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
               >
                 <Square size={12} fill="#fff" />
-                Clock Out
+                <span className="btn-label">Clock Out</span>
               </button>
             ) : (
-              <span className="badge badge-active" style={{ fontSize: '0.65rem' }}>Done for Day</span>
+              <span className="badge badge-active" style={{ fontSize: '0.65rem' }}>Done</span>
             )}
           </div>
         )}
@@ -167,23 +161,17 @@ const Header = () => {
         <button 
           onClick={toggleTheme}
           className="btn-icon"
-          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          style={{ width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
           title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
         >
-          {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 
         {/* User Card */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-          paddingLeft: '1.25rem',
-          borderLeft: '1px solid var(--border-color)'
-        }}>
+        <div className="user-card">
           <div style={{
-            width: '38px',
-            height: '38px',
+            width: '36px',
+            height: '36px',
             borderRadius: 'var(--radius-full)',
             backgroundColor: 'var(--primary)',
             color: '#fff',
@@ -192,11 +180,12 @@ const Header = () => {
             justifyContent: 'center',
             fontWeight: 700,
             fontSize: '0.9rem',
-            border: '2px solid var(--glass-border)'
+            border: '2px solid var(--glass-border)',
+            flexShrink: 0
           }}>
             {user?.employeeProfile ? user.employeeProfile.firstName[0] : 'A'}
           </div>
-          <div style={{ display: 'none', flexDirection: 'column' }} className="d-md-flex">
+          <div className="user-info">
             <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>
               {user?.employeeProfile ? `${user.employeeProfile.firstName} ${user.employeeProfile.lastName}` : 'Administrator'}
             </span>

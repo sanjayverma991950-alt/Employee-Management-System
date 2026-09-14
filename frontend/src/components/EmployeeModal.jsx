@@ -131,7 +131,7 @@ const EmployeeModal = ({ isOpen, onClose, employee, onSave }) => {
         {/* Form Body */}
         <form onSubmit={handleSubmit}>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">First Name *</label>
               <input
@@ -156,7 +156,7 @@ const EmployeeModal = ({ isOpen, onClose, employee, onSave }) => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">Email Address *</label>
               <input
@@ -180,7 +180,7 @@ const EmployeeModal = ({ isOpen, onClose, employee, onSave }) => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">Designation *</label>
               <input
@@ -212,7 +212,7 @@ const EmployeeModal = ({ isOpen, onClose, employee, onSave }) => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">Annual Salary (USD) *</label>
               <input
