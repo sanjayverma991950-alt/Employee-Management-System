@@ -6,7 +6,7 @@ import {
   Plus, 
   Trash2, 
   Edit2, 
-  DollarSign, 
+  IndianRupee, 
   Users, 
   X,
   Save,
@@ -223,8 +223,8 @@ const DepartmentList = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gridColumn: 'span 2', marginTop: '0.25rem' }}>
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>Annual Operating Budget</span>
                   <strong style={{ marginTop: '0.15rem', display: 'flex', alignItems: 'center', gap: '0.15rem', color: 'var(--secondary)', fontSize: '0.95rem' }}>
-                    <DollarSign size={14} />
-                    {dept.budget ? dept.budget.toLocaleString() : '0'} USD
+                    <IndianRupee size={14} />
+                    {dept.budget ? dept.budget.toLocaleString('en-IN') : '0'} INR
                   </strong>
                 </div>
               </div>
@@ -305,7 +305,7 @@ const DepartmentList = () => {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Annual Budget (USD)</label>
+                <label className="form-label">Annual Budget (INR)</label>
                 <input
                   type="number"
                   name="budget"
