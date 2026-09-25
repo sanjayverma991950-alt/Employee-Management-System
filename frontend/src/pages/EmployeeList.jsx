@@ -262,7 +262,7 @@ const EmployeeList = () => {
                 <th>Designation</th>
                 <th>Department</th>
                 <th>Joined</th>
-                <th>Salary</th>
+                <th>Salary (₹)</th>
                 <th>Status</th>
                 {isAdmin && <th style={{ textAlign: 'right' }}>Actions</th>}
               </tr>
@@ -301,7 +301,7 @@ const EmployeeList = () => {
                           fontSize: '0.8rem',
                           fontWeight: 700
                         }} title="Confidential record">
-                          ₹85,000
+                          ₹8,50,000
                         </span>
                       )}
                     </td>

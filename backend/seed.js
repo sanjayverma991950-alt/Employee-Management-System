@@ -41,21 +41,21 @@ const seedData = async () => {
         code: 'ENG',
         description: 'Product development and technical infrastructure.',
         managerName: 'Sarah Jenkins',
-        budget: 450000
+        budget: 4500000
       },
       {
         name: 'Human Resources',
         code: 'HR',
         description: 'Recruitment, operations, and culture.',
         managerName: 'David Vance',
-        budget: 120000
+        budget: 1500000
       },
       {
         name: 'Marketing',
         code: 'MKT',
         description: 'Brand growth, advertisements, and communication.',
         managerName: 'Elena Rostova',
-        budget: 200000
+        budget: 2000000
       }
     ]);
     console.log(`Seeded ${depts.length} departments.`);
@@ -83,10 +83,10 @@ const seedData = async () => {
       firstName: 'John',
       lastName: 'Doe',
       email: 'employee@ems.com',
-      phone: '+1 555-0199',
+      phone: '+91 98765 01199',
       designation: 'Software Engineer',
       department: depts[0]._id, // Engineering
-      salary: 85000,
+      salary: 850000,
       status: 'Active',
       joiningDate: new Date('2025-01-15')
     });
@@ -103,10 +103,10 @@ const seedData = async () => {
         firstName: 'Jane',
         lastName: 'Smith',
         email: 'jane.smith@ems.com',
-        phone: '+1 555-0144',
+        phone: '+91 98765 01144',
         designation: 'Senior HR Specialist',
         department: depts[1]._id, // HR
-        salary: 68000,
+        salary: 680000,
         status: 'Active',
         joiningDate: new Date('2024-03-10')
       },
@@ -114,10 +114,10 @@ const seedData = async () => {
         firstName: 'Michael',
         lastName: 'Brown',
         email: 'michael.b@ems.com',
-        phone: '+1 555-0187',
+        phone: '+91 98765 01187',
         designation: 'QA Lead',
         department: depts[0]._id, // Engineering
-        salary: 78000,
+        salary: 780000,
         status: 'Active',
         joiningDate: new Date('2024-08-22')
       },
@@ -125,10 +125,10 @@ const seedData = async () => {
         firstName: 'Emily',
         lastName: 'Davis',
         email: 'emily.d@ems.com',
-        phone: '+1 555-0123',
+        phone: '+91 98765 01123',
         designation: 'Creative Designer',
         department: depts[2]._id, // Marketing
-        salary: 58000,
+        salary: 580000,
         status: 'Active',
         joiningDate: new Date('2025-02-01')
       },
@@ -136,10 +136,10 @@ const seedData = async () => {
         firstName: 'David',
         lastName: 'Miller',
         email: 'david.m@ems.com',
-        phone: '+1 555-0155',
+        phone: '+91 98765 01155',
         designation: 'Backend Developer',
         department: depts[0]._id, // Engineering
-        salary: 80000,
+        salary: 800000,
         status: 'Active',
         joiningDate: new Date('2025-05-10')
       }
