@@ -225,6 +225,7 @@ const DepartmentList = () => {
                   <strong style={{ marginTop: '0.15rem', display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--secondary)', fontSize: '0.95rem' }}>
                     <IndianRupee size={15} />
                     <span>{dept.budget ? dept.budget.toLocaleString('en-IN') : '0'}</span>
+                    <span style={{ fontSize: '0.75rem', opacity: 0.85, color: 'var(--text-muted)', fontWeight: 600 }}>INR</span>
                   </strong>
                 </div>
               </div>
@@ -305,12 +306,12 @@ const DepartmentList = () => {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Annual Budget (₹)</label>
+                <label className="form-label">Annual Budget (₹ INR)</label>
                 <input
                   type="number"
                   name="budget"
                   className="form-control"
-                  placeholder="e.g. 1500000"
+                  placeholder="e.g. 4500000"
                   value={formData.budget}
                   onChange={handleChange}
                 />

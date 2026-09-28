@@ -262,7 +262,7 @@ const EmployeeList = () => {
                 <th>Designation</th>
                 <th>Department</th>
                 <th>Joined</th>
-                <th>Salary (₹)</th>
+                <th>Salary (₹ INR)</th>
                 <th>Status</th>
                 {isAdmin && <th style={{ textAlign: 'right' }}>Actions</th>}
               </tr>
