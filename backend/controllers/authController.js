@@ -44,6 +44,112 @@ export const loginUser = async (req, res) => {
   }
 };
 
+// @desc    Register a new user
+// @route   POST /api/auth/register
+// @access  Public
+export const registerUser = async (req, res) => {
+  let { name, firstName, lastName, email, password, role, department, designation, phone } = req.body;
+
+  try {
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Please provide email and password' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long' });
+    }
+
+    email = email.toLowerCase().trim();
+
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ success: false, message: 'An account with this email already exists' });
+    }
+
+    const employeeExists = await Employee.findOne({ email });
+    if (employeeExists) {
+      return res.status(400).json({ success: false, message: 'An employee with this email already exists' });
+    }
+
+    // Determine names
+    let fName = firstName?.trim();
+    let lName = lastName?.trim();
+    if (!fName && name) {
+      const parts = name.trim().split(' ');
+      fName = parts[0];
+      lName = parts.slice(1).join(' ') || 'User';
+    }
+    if (!fName) fName = 'New';
+    if (!lName) lName = 'Member';
+    const fullName = `${fName} ${lName}`.trim();
+
+    const assignedRole = role === 'Admin' ? 'Admin' : 'Employee';
+
+    // Create User record
+    const user = await User.create({
+      name: assignedRole === 'Admin' ? (name?.trim() || 'Admin') : fullName,
+      email,
+      password,
+      role: assignedRole
+    });
+
+    // If Employee, create and link an Employee profile
+    if (assignedRole === 'Employee') {
+      let deptId = department;
+      if (!deptId) {
+        const defaultDept = await Department.findOne({});
+        deptId = defaultDept ? defaultDept._id : null;
+      }
+
+      if (deptId) {
+        const employeeProfile = await Employee.create({
+          user: user._id,
+          firstName: fName,
+          lastName: lName,
+          email,
+          phone: phone?.trim() || '',
+          designation: designation?.trim() || 'Staff Member',
+          department: deptId,
+          salary: 500000,
+          status: 'Active',
+          joiningDate: new Date()
+        });
+
+        user.employeeProfile = employeeProfile._id;
+        await user.save();
+      }
+    }
+
+    const populatedUser = await User.findById(user._id).populate('employeeProfile');
+
+    res.status(201).json({
+      success: true,
+      message: 'Account registered successfully!',
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      employeeProfile: populatedUser.employeeProfile,
+      token: generateToken(user._id)
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Get departments for registration dropdown
+// @route   GET /api/auth/departments
+// @access  Public
+export const getRegistrationDepartments = async (req, res) => {
+  try {
+    const departments = await Department.find({}).select('name code');
+    res.json({ success: true, data: departments });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // @desc    Reset password (Forgot Password)
 // @route   POST /api/auth/forgot-password
 // @access  Public

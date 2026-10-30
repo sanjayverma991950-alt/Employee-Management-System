@@ -47,8 +47,6 @@ export const AuthProvider = ({ children }) => {
       const res = await api.post('/auth/login', { email, password });
       if (res.success) {
         localStorage.setItem('token', res.token);
-        // Res.data format is returned from login API as email, role, etc.
-        // Let's call /auth/profile immediately to fetch populated data or just use res directly.
         const profileRes = await api.get('/auth/profile');
         if (profileRes.success) {
           setUser(profileRes.data);
@@ -58,6 +56,26 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: 'Login failed' };
     } catch (error) {
       return { success: false, message: error.message || 'Login failed' };
+    }
+  };
+
+  // Register handler
+  const register = async (userData) => {
+    try {
+      const res = await api.post('/auth/register', userData);
+      if (res.success) {
+        localStorage.setItem('token', res.token);
+        const profileRes = await api.get('/auth/profile');
+        if (profileRes.success) {
+          setUser(profileRes.data);
+          return { success: true };
+        }
+        setUser(res);
+        return { success: true };
+      }
+      return { success: false, message: 'Registration failed' };
+    } catch (error) {
+      return { success: false, message: error.message || 'Registration failed' };
     }
   };
 
@@ -77,6 +95,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     theme,
     login,
+    register,
     logout,
     toggleTheme,
     isAdmin: user?.role === 'Admin',

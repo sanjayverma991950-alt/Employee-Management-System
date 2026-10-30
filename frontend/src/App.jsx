@@ -78,7 +78,13 @@ const App = () => {
           {/* Public Authentication */}
           <Route path="/login" element={
             <PublicRoute>
-              <Login />
+              <Login initialMode="login" />
+            </PublicRoute>
+          } />
+
+          <Route path="/register" element={
+            <PublicRoute>
+              <Login initialMode="register" />
             </PublicRoute>
           } />
 
