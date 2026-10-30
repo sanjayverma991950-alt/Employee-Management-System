@@ -183,17 +183,6 @@ const Login = ({ initialMode = 'login' }) => {
     }
   };
 
-  // Helper to pre-fill login credentials for demo purposes
-  const preFill = (role) => {
-    if (role === 'admin') {
-      setEmail('admin@ems.com');
-      setPassword('admin123');
-    } else {
-      setEmail('employee@ems.com');
-      setPassword('employee123');
-    }
-  };
-
   return (
     <div style={{
       minHeight: '100vh',
@@ -662,21 +651,6 @@ const Login = ({ initialMode = 'login' }) => {
         {mode === 'login' && (
           <div>
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <div style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-                width: '48px',
-                height: '48px',
-                borderRadius: 'var(--radius-md)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                fontWeight: 800,
-                fontSize: '1.5rem',
-                margin: '0 auto 1rem'
-              }}>
-                E
-              </div>
               <h2 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '0.25rem' }}>Welcome</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Enter credentials to access the staff portal</p>
             </div>
@@ -801,39 +775,6 @@ const Login = ({ initialMode = 'login' }) => {
                 </span>
               </div>
             </form>
-
-            {/* Demo Fast Login Helpers */}
-            <div style={{
-              marginTop: '1.75rem',
-              borderTop: '1px solid var(--border-color)',
-              paddingTop: '1.25rem',
-              textAlign: 'center'
-            }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Quick Demo Login
-              </span>
-              <div style={{
-                display: 'flex',
-                gap: '0.75rem',
-                justifyContent: 'center',
-                marginTop: '0.75rem'
-              }}>
-                <button
-                  onClick={() => preFill('admin')}
-                  className="btn btn-secondary"
-                  style={{ padding: '0.4rem 0.85rem', fontSize: '0.75rem', flex: 1 }}
-                >
-                  Admin
-                </button>
-                <button
-                  onClick={() => preFill('employee')}
-                  className="btn btn-secondary"
-                  style={{ padding: '0.4rem 0.85rem', fontSize: '0.75rem', flex: 1 }}
-                >
-                  Employee Acc
-                </button>
-              </div>
-            </div>
           </div>
         )}
 
