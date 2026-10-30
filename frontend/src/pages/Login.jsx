@@ -183,6 +183,17 @@ const Login = ({ initialMode = 'login' }) => {
     }
   };
 
+  // Helper to pre-fill login credentials
+  const preFill = (role) => {
+    if (role === 'admin') {
+      setEmail('admin@ems.com');
+      setPassword('admin123');
+    } else {
+      setEmail('employee@ems.com');
+      setPassword('employee123');
+    }
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -651,7 +662,7 @@ const Login = ({ initialMode = 'login' }) => {
         {mode === 'login' && (
           <div>
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <h2 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '0.25rem' }}>Welcome</h2>
+              <h2 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '0.25rem', color: '#10b981' }}>Welcome</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Enter credentials to access the staff portal</p>
             </div>
 
@@ -775,6 +786,33 @@ const Login = ({ initialMode = 'login' }) => {
                 </span>
               </div>
             </form>
+
+            {/* Quick Account Fill Buttons (without Demo Login text) */}
+            <div style={{
+              marginTop: '1.5rem',
+              borderTop: '1px solid var(--border-color)',
+              paddingTop: '1.25rem',
+              display: 'flex',
+              gap: '0.75rem',
+              justifyContent: 'center'
+            }}>
+              <button
+                type="button"
+                onClick={() => preFill('admin')}
+                className="btn btn-secondary"
+                style={{ padding: '0.45rem 0.85rem', fontSize: '0.75rem', flex: 1 }}
+              >
+                Admin
+              </button>
+              <button
+                type="button"
+                onClick={() => preFill('employee')}
+                className="btn btn-secondary"
+                style={{ padding: '0.45rem 0.85rem', fontSize: '0.75rem', flex: 1 }}
+              >
+                Employee Acc
+              </button>
+            </div>
           </div>
         )}
 
