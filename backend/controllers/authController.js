@@ -30,7 +30,7 @@ export const loginUser = async (req, res) => {
       res.json({
         success: true,
         _id: user._id,
-        name: user.name || (user.role === 'Admin' ? 'Sanjay Verma' : ''),
+        name: user.name || (user.role === 'Admin' ? 'Admin' : ''),
         email: user.email,
         role: user.role,
         employeeProfile: user.employeeProfile,
@@ -39,6 +39,41 @@ export const loginUser = async (req, res) => {
     } else {
       res.status(401).json({ success: false, message: 'Invalid email or password' });
     }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Reset password (Forgot Password)
+// @route   POST /api/auth/forgot-password
+// @access  Public
+export const forgotPassword = async (req, res) => {
+  let { email, newPassword } = req.body;
+
+  try {
+    if (!email || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Please provide registered email and new password' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long' });
+    }
+
+    email = email.toLowerCase().trim();
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'No registered user found with this email' });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: 'Password reset successfully! You can now log in with your new password.'
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

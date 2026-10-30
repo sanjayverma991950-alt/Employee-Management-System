@@ -104,7 +104,7 @@ const Header = ({ onMenuToggle }) => {
         {/* Greeting and Title */}
         <div>
           <h1 className="header-greeting" style={{ fontSize: '1.1rem', fontWeight: 700 }}>
-            {getGreeting()}, {user?.employeeProfile ? user.employeeProfile.firstName : 'Sanjay Verma'}
+            {getGreeting()}, {user?.employeeProfile ? user.employeeProfile.firstName : (user?.name || 'Admin')}
           </h1>
           <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }} className="header-date">
             {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
@@ -168,7 +168,7 @@ const Header = ({ onMenuToggle }) => {
         </button>
 
         {/* User Card */}
-        <div className="user-card" title={isAdmin ? 'Administrator: Sanjay Verma' : 'Employee'}>
+        <div className="user-card" title={isAdmin ? 'Administrator' : 'Employee'}>
           <div style={{
             width: '36px',
             height: '36px',
@@ -183,11 +183,11 @@ const Header = ({ onMenuToggle }) => {
             border: '2px solid var(--glass-border)',
             flexShrink: 0
           }}>
-            {user?.employeeProfile ? user.employeeProfile.firstName[0] : 'S'}
+            {user?.employeeProfile ? user.employeeProfile.firstName[0] : (user?.name ? user.name[0] : 'A')}
           </div>
           <div className="user-info">
             <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>
-              {user?.employeeProfile ? `${user.employeeProfile.firstName} ${user.employeeProfile.lastName}` : 'Sanjay Verma'}
+              {user?.employeeProfile ? `${user.employeeProfile.firstName} ${user.employeeProfile.lastName}` : (user?.name || 'Admin')}
             </span>
             <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
               {isAdmin ? 'Admin' : user?.email}

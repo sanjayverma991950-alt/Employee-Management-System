@@ -115,7 +115,7 @@ const Sidebar = ({ isOpen = false, onClose = () => {} }) => {
           <FolderLock size={16} className="text-secondary" style={{ color: 'var(--primary)' }} />
           <div>
             <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-primary)' }}>Role Level</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 500 }}>{isAdmin ? 'Administrator (Sanjay Verma)' : 'Employee Staff'}</div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 500 }}>{isAdmin ? 'Administrator' : 'Employee Staff'}</div>
           </div>
         </div>
 
